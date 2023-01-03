@@ -2,10 +2,6 @@
   Background Video Controls 1.0.0
   Video Elements For Sqaurespace
   Copyright Will-Myers
-  
-  Updates:
-  - Video will now pause when not in view on default, use the data-attribute: 
-  data-play-in-view="false" to turn off. 
 ========== */
 (function(){
   function buildHTML(section, params) {
@@ -226,7 +222,7 @@
       });
     }
 
-    let cssURL = 'https://assets.codepen.io/3198845/WMBackgroundVideo210920v1.0.0.css';
+    let cssURL = 'https://cdn.jsdelivr.net/gh/willmyethewebsiteguy/backgroundVideoControls@1/styles.min.css';
     if(!document.querySelector('#wm-background-video-css')){
       addCSSFileToHeader(cssURL);
       function addCSSFileToHeader(url) {
