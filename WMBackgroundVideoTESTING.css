@@ -1,0 +1,101 @@
+/* =========
+  Background Video Element 1.0.0
+  Section Background Video Enhancements For Squarespace
+  This Code is Licensed by Will-Myers.com
+========== */
+.wm-background-video-control{
+  --icon-size: 12px;
+  --icon-padding: 8px;
+  --icon-margin: 4px;
+
+  --icon-color: white;
+  --icon-fill: white;
+  --icon-stroke-width: 4px;
+
+  --icon-border-radius: 50%;
+  --icon-border-width: 0px;
+  --icon-border-color: hsla(0, 0%, 70%, 1) ;
+
+  --icon-background-color: hsla(0,0%, 0%, .5);
+  --icon-background-blur: 5px;
+  --icon-drop-shadow: none;
+  
+  all:unset;
+  display:grid;
+  box-sizing:border-box;
+  place-items:center;
+  position:absolute;
+  bottom:0;
+  padding: var(--icon-padding);
+  border-radius: var(--icon-border-radius);
+  border: var(--icon-border-width) solid var(--icon-border-color);
+  z-index:1;
+  margin:var(--icon-margin);
+  backdrop-filter: blur(var(--icon-background-blur));
+  background-color: var(--icon-background-color);
+  cursor:pointer;
+  opacity:0 ;
+  transform: translateY(10px);
+  touch-action: manipulation;
+  transition: opacity .3s ease,
+    transform .3s ease;
+}
+.wm-background-video-control.loaded{
+  opacity:1;
+  transform: translateY(0px) scale(1);
+}
+.wm-background-video-control:active{
+  transform:scale(.95)
+}
+.wm-background-video-control.volume-control{
+  left:0;
+}
+
+.wm-background-video-control.play-pause-control{
+  right:0;
+}
+.wm-background-video-control svg {
+  height: var(--icon-size);
+  width: var(--icon-size);
+  filter: drop-shadow(var(--icon-drop-shadow));
+}
+
+/*Video Playing State*/
+/*Playing State*/
+[data-background-video-state="playing"] .wm-background-video-control .play-svg{
+  display:none;
+}
+[data-background-video-state="playing"] .wm-background-video-control .pause-svg{
+  display:block;
+}
+[data-background-video-state="playing"] .wm-background-video-control .replay-svg{
+  display:none;
+}
+
+/*Paused*/
+[data-background-video-state="paused"] .wm-background-video-control .play-svg{
+  display:block;
+}
+[data-background-video-state="paused"] .wm-background-video-control .pause-svg{
+  display:none;
+}
+[data-background-video-state="paused"] .wm-background-video-control .replay-svg{
+  display:none;
+}
+
+/*Ended*/
+[data-background-video-state="ended"] .wm-background-video-control .play-svg{
+  display:none;
+}
+[data-background-video-state="ended"] .wm-background-video-control .pause-svg{
+  display:none;
+}
+[data-background-video-state="ended"] .wm-background-video-control .replay-svg{
+  display:block;
+}
+
+/*Volume Level State*/
+/*Mute*/
+.page-section:not([data-background-video-volume="0"]) .wm-background-video-control.volume-control [data-name="mute-layer"]{
+  display:none;
+}
