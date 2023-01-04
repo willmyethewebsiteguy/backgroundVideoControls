@@ -4,6 +4,26 @@
   Copyright Will-Myers
 ========== */
 (function(){
+  function checkIfWebKit() {
+    var ua = navigator.userAgent.toLowerCase();
+
+    var isWebKit = false;
+
+    if ((ua.indexOf("chrome") === ua.indexOf("android")) && ua.indexOf("safari") !== -1) {
+      // accessed via a WebKit-based browser
+      isWebKit = true;
+    } else {
+      // check if accessed via a WebKit-based webview
+      if ((ua.indexOf("ipad") !== -1) || (ua.indexOf("iphone") !== -1) || (ua.indexOf("ipod") !== -1)) {
+        isWebKit = true;
+      } else {
+        isWebKit = false;
+      }
+    }
+
+    return isWebKit;
+  }
+  
   function buildHTML(section, params) {
     let vid,
         n = 0;
@@ -12,10 +32,13 @@
 
     function checkVideoLoad() {
       vid = section.querySelector('.sqs-video-background-native video');
-      
+
       if (vid) { 
         clearInterval(cycleCheck)
         vid.addEventListener('canplay', buildVideoEl);
+        if(checkIfWebKit()){
+          vid.load();
+        }
       }
       n++
       if (n > 20) {
@@ -101,17 +124,6 @@
         playPauseControl.classList.add('loaded');
       }
 
-      /*Set Initial State*/
-      if (params.initialState == 'playing') {
-        section.dataset.backgroundVideoState = 'playing';
-        userPaused = false; 
-      }
-      if (params.initialState == 'paused') {
-        section.dataset.backgroundVideoState = 'paused';
-        vid.pause();
-        userPaused = true; 
-      }
-      
       /*Set Only-Play-In-View*/
       if(!!window.IntersectionObserver && params.onlyPlayInView){
         let observer = new IntersectionObserver((entries, observer) => { 
@@ -141,7 +153,7 @@
       } else if (!vid.paused) {
         playVideo();
       }
-
+      
       section.dataset.backgroundVideoVolume = '0';
       volumeControl.addEventListener('click',toggleMute);
       vid.addEventListener('ended', videoEnded);
@@ -152,6 +164,18 @@
       vid.addEventListener('play', function() {
         section.dataset.backgroundVideoState = 'playing'
       });
+
+      /*Set Initial State*/
+      if (params.initialState == 'playing') {
+        section.dataset.backgroundVideoState = 'playing';
+        userPaused = false; 
+      }
+      if (params.initialState == 'paused') {
+        vid.removeAttribute('autoplay');
+        section.dataset.backgroundVideoState = 'paused';
+        vid.pause;
+        userPaused = true; 
+      }
 
       function togglePlayPause() {
         if (vid.paused) {
