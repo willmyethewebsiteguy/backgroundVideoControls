@@ -39,6 +39,7 @@
   touch-action: manipulation;
   transition: opacity .3s ease,
     transform .3s ease;
+  z-index:9;
 }
 .wm-background-video-control.loaded{
   opacity:1;
