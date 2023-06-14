@@ -61,6 +61,11 @@
   filter: drop-shadow(var(--icon-drop-shadow));
 }
 
+/*Video Initial State*/
+[data-wm-initial-state="paused"] .sqs-video-background-native > img{
+  opacity: 1 !important;
+}
+
 /*Video Playing State*/
 /*Playing State*/
 [data-background-video-state="playing"] .wm-background-video-control .play-svg{
