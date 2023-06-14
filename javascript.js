@@ -42,7 +42,6 @@
         }
         
         if(checkIfWebKit()){
-          console.log('webkit')
           vid.load();
         }
       }
@@ -54,7 +53,6 @@
 
 
     function buildVideoEl() {
-      console.log('built Els')
       let el = section.querySelector('[data-wm-plugin="background-video"]'),
           volumeControl = document.createElement('button'),
           playPauseControl = document.createElement('button'),
@@ -142,7 +140,7 @@
             }
           });
         }, {threshold: .3});
-        observer.observe(vid) ;
+        observer.observe(vid);
       }
       
       /*Set Loop*/
@@ -158,7 +156,6 @@
         vid.play();
         pauseVideo();
       } else if (!vid.paused) {
-        console.log('init playing')
         playVideo();
       }
       
@@ -166,7 +163,9 @@
       volumeControl.addEventListener('click',toggleMute);
       vid.addEventListener('ended', videoEnded);
       playPauseControl.addEventListener('click', function() {
-        section.querySelector('.sqs-video-background-native > img').style.display = 'none';
+        if (section.querySelector('.sqs-video-background-native > img')) {
+          section.querySelector('.sqs-video-background-native > img').style.display = 'none';
+        }
         togglePlayPause()
       });
       vid.addEventListener('pause', function() {
@@ -180,14 +179,14 @@
       if (params.initialState == 'playing') {
         section.dataset.wmInitialState = 'playing';
         section.dataset.backgroundVideoState = 'playing';
-        userPaused = false; 
+        //userPaused = false; 
       }
       if (params.initialState == 'paused') {
         section.dataset.wmInitialState = 'paused';
         vid.removeAttribute('autoplay');
         section.dataset.backgroundVideoState = 'paused';
         vid.pause();
-        userPaused = true; 
+        //userPaused = true; 
       }
 
       function togglePlayPause() {
@@ -254,7 +253,6 @@
               playPauseBtn: vid.dataset.playPauseControl || 'true',
               onlyPlayInView: vid.dataset.playInView || 'false'
             };
-        //console.log(params.onlyPlayInView)
         buildHTML(section, params);
       });
     }
