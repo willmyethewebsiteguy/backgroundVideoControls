@@ -35,8 +35,14 @@
 
       if (vid) { 
         clearInterval(cycleCheck)
-        vid.addEventListener('canplay', buildVideoEl);
+        if ( vid.readyState === 4 ) {
+          buildVideoEl();
+        } else {
+          vid.addEventListener('canplay', buildVideoEl);
+        }
+        
         if(checkIfWebKit()){
+          console.log('webkit')
           vid.load();
         }
       }
@@ -48,6 +54,7 @@
 
 
     function buildVideoEl() {
+      console.log('built Els')
       let el = section.querySelector('[data-wm-plugin="background-video"]'),
           volumeControl = document.createElement('button'),
           playPauseControl = document.createElement('button'),
@@ -151,13 +158,17 @@
         vid.play();
         pauseVideo();
       } else if (!vid.paused) {
+        console.log('init playing')
         playVideo();
       }
       
       section.dataset.backgroundVideoVolume = '0';
       volumeControl.addEventListener('click',toggleMute);
       vid.addEventListener('ended', videoEnded);
-      playPauseControl.addEventListener('click', togglePlayPause);
+      playPauseControl.addEventListener('click', function() {
+        section.querySelector('.sqs-video-background-native > img').style.display = 'none';
+        togglePlayPause()
+      });
       vid.addEventListener('pause', function() {
         section.dataset.backgroundVideoState = 'paused'
       });
@@ -167,13 +178,15 @@
 
       /*Set Initial State*/
       if (params.initialState == 'playing') {
+        section.dataset.wmInitialState = 'playing';
         section.dataset.backgroundVideoState = 'playing';
         userPaused = false; 
       }
       if (params.initialState == 'paused') {
+        section.dataset.wmInitialState = 'paused';
         vid.removeAttribute('autoplay');
         section.dataset.backgroundVideoState = 'paused';
-        vid.pause;
+        vid.pause();
         userPaused = true; 
       }
 
